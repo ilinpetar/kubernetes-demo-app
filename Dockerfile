@@ -1,9 +1,11 @@
 # temp container to build using gradle
-FROM openjdk:21-jdk AS GRADLE_BUILD_IMAGE
+FROM openjdk:21-jdk AS gradle_build_image
+RUN microdnf install findutils
 COPY . .
-RUN ./gradlew build
+COPY .gradle .gradle
+RUN ./gradlew bootJar
 
 FROM openjdk:21-jdk
-COPY --from=GRADLE_BUILD_IMAGE build/libs/kubernetes-demo-app-1.0.jar app.jar
+COPY --from=gradle_build_image build/libs/kubernetes-demo-app-1.0.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app.jar"]
