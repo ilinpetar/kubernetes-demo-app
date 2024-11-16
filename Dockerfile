@@ -2,7 +2,6 @@
 FROM openjdk:21-jdk AS gradle_build_image
 RUN microdnf install findutils
 COPY . .
-COPY .gradle .gradle
 RUN ./gradlew bootJar
 
 FROM openjdk:21-jdk
