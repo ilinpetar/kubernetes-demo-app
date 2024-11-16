@@ -1,0 +1,2 @@
+oc new-build --name kubernetes-demo-app --binary --strategy docker
+oc start-build kubernetes-demo-app --from-dir=.

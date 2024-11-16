@@ -1,0 +1,30 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kubernetes-demo-app
+  labels:
+    app: kubernetes-demo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes-demo-app
+  template:
+    metadata:
+      name: kubernetes-demo-app
+      labels:
+        app: kubernetes-demo-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/actuator/prometheus"
+    spec:
+      containers:
+        - name: kubernetes-demo-app
+          image: image-registry.openshift-image-registry.svc:5000/epassi/kubernetes-demo-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+    restartPolicy: Always
+      
